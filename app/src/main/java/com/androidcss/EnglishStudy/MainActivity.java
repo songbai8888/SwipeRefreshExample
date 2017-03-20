@@ -135,6 +135,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private String getTypeName(int id){
+        if(type_name.containsKey(id)){
+            return type_name.get(id);
+        }
+        else{
+            return "Others" ;
+        }
+
+    }
+
     private void loadFromLocal(){
         try {
             readFromFile();
@@ -179,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 // Enter URL address where your json file resides
                 // Even you can make call to php file which returns json data
                 if(refreshState == 0){
-                    url = new URL("http://192.168.0.103:8000/englishpapercontent/");
+                    url = new URL("http://songbai-iot.ngrok.cc/englishpapercontent/");
                     //Log.i("Hello", "New data ");
                 }
                 else{
@@ -288,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                     englishContentData.english_paper_title = json_data.getString("english_paper_title");
                     englishContentData.english_paper_content =json_data.getString("english_paper_content");
                     englishContentData.english_paper_media =json_data.getString("english_paper_media");
-                    englishContentData.english_paper_dir = type_name.get(json_data.getInt("english_type_id"));
+                    englishContentData.english_paper_dir = getTypeName(json_data.getInt("english_type_id"));
                     englishContentData.english_type_id = json_data.getInt("english_type_id");
                     //englishContentData.english_paper_date = dateFormat.parse(json_data.getString("english_paper_date"));
                     englishContentData.id = json_data.getInt("id");
