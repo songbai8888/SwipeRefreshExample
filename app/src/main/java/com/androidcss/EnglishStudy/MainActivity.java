@@ -7,13 +7,19 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -42,6 +48,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static android.view.View.INVISIBLE;
+
 public class MainActivity extends AppCompatActivity {
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
@@ -51,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isUpdated = false;
     private RecyclerView mRVEnglishContent;
     private LinearLayoutManager mLayoutManager;
+    private LinearLayout toolbarLayout;
+    private CheckBox checkBoxVoa,checkBoxCorr,checkBoxReading,checkBoxOthers;
+    private int toolbarHeight;
     private AdapterEnglishContent mAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
     private String save_listdata = "";
@@ -71,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }*/
+
+        toolbarLayout = (LinearLayout)findViewById(R.id.topToolbar);
+        toolbarHeight = toolbarLayout.getHeight();
+        checkBoxVoa = (CheckBox)findViewById(R.id.checkBoxVoa);
+        checkBoxCorr = (CheckBox)findViewById(R.id.checkBoxCorr);
+        checkBoxReading =  (CheckBox)findViewById(R.id.checkBoxReading);
+        checkBoxOthers =  (CheckBox)findViewById(R.id.checkBoxOthers);
         type_name.put(1, "VOA Specials");
         type_name.put(2, "VOA Corresponds");
         type_name.put(3, "VOA Readings");
@@ -357,7 +380,17 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(myIntent);
                 return true;
             case R.id.menu_help:
-                Toast.makeText(this, "You have selected Help Menu", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "You have selected Help Menu", Toast.LENGTH_SHORT).show();
+                if(toolbarLayout.getVisibility() == INVISIBLE){
+                    toolbarLayout.setVisibility(View.VISIBLE);
+                    toolbarLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                            toolbarHeight));
+                }
+                else{
+                    toolbarLayout.setVisibility(View.INVISIBLE);
+                    toolbarLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                            0));
+                }
                 return true;
             case R.id.menu_about:
                 Toast.makeText(this, "You have selected About Menu", Toast.LENGTH_SHORT).show();

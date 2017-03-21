@@ -16,5 +16,16 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Whtsnxt" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
+        <item name="android:windowBackground">@color/blue</item>
+        <item name="android:colorBackground">@color/blue</item>
+
+    </style>
 </resources>

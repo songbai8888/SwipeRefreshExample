@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:id="@+id/topToolbar"
+        android:background="@android:color/darker_gray">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:text="VOA Special"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxVoa"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:text="Corr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxCorr"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:text="Reading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxReading"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:text="Others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxOthers"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swifeRefresh"
