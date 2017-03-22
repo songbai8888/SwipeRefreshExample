@@ -61,14 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
     private LinearLayout toolbarLayout;
     private CheckBox checkBoxVoa,checkBoxCorr,checkBoxReading,checkBoxOthers;
-    private int toolbarHeight;
     private AdapterEnglishContent mAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
     private String save_listdata = "";
     private String data_dir = "";
     private File saveDir;
     public static List<DataEnglishContent> data;
-    public static int currentSelected = 0;
+    public static int currentSelected = 0, times = 0;
     private static int currentPage = 1;
     private static int totalPages = 0;
     private static String prevUrl = "";
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         toolbarLayout = (LinearLayout)findViewById(R.id.topToolbar);
-        toolbarHeight = toolbarLayout.getHeight();
         checkBoxVoa = (CheckBox)findViewById(R.id.checkBoxVoa);
         checkBoxCorr = (CheckBox)findViewById(R.id.checkBoxCorr);
         checkBoxReading =  (CheckBox)findViewById(R.id.checkBoxReading);
@@ -122,9 +120,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //Log.i("Hello", String.valueOf(lastVisibleItem) + ":" + String.valueOf(mAdapter.getItemCount()));
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount()) {
-                    refreshState = 1;
-                    //Log.i("Hello", "Need more data...." + MainActivity.currentPage);
-                    new AsyncFetch().execute();
+                    //not every time push down to get more data, twice to get.
+                    times = times + 1;
+                    if(times > 2){
+                        times = 0;
+                        refreshState = 1;
+                        //Log.i("Hello", "Need more data...." + MainActivity.currentPage);
+                        new AsyncFetch().execute();
+                    }
+
                 }
                 else {
                     refreshState = 0;
@@ -381,15 +385,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_help:
                 //Toast.makeText(this, "You have selected Help Menu", Toast.LENGTH_SHORT).show();
-                if(toolbarLayout.getVisibility() == INVISIBLE){
+                if(toolbarLayout.getVisibility() == View.GONE){
                     toolbarLayout.setVisibility(View.VISIBLE);
-                    toolbarLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-                            toolbarHeight));
                 }
                 else{
-                    toolbarLayout.setVisibility(View.INVISIBLE);
-                    toolbarLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-                            0));
+                    toolbarLayout.setVisibility(View.GONE);
                 }
                 return true;
             case R.id.menu_about:

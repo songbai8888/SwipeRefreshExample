@@ -38,6 +38,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Message;
 
+import static android.view.View.INVISIBLE;
+
 public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnErrorListener{
     private static final int  MEGABYTE = 1024 * 1024;
     private String data_dir = "";
@@ -59,6 +62,7 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
     private boolean isPrepared = false;
     private int current_media = 0;
     private boolean is_localfile = false;
+    private LinearLayout statusLayout1, statusLayout2, statusLayout3;
 
     private double startTime = 0;
     private double finalTime = 0;
@@ -84,6 +88,10 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
         setContentView(R.layout.activity_study);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        statusLayout1 = (LinearLayout)findViewById(R.id.status_1);
+        statusLayout2 = (LinearLayout)findViewById(R.id.status_2);
+        statusLayout3 = (LinearLayout)findViewById(R.id.status_3);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -362,8 +370,11 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
         }
     };
 
-    public static URI parseUrl(String surl) throws Exception
+    public URI parseUrl(String surl) throws Exception
     {
+        if(surl.length() == 0 || surl == null){
+            return null;
+        }
         URL u = new URL(surl);
         return new URI(u.getProtocol(), u.getAuthority(), u.getPath(), u.getQuery(), u.getRef());
     }
@@ -554,6 +565,7 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
         File mp3file = new File(saveDir, fileName);
         try {
             if (mp3file.exists()) {
+                setStatusbarVisibility(1);
                 //Toast.makeText(getApplicationContext(), fileName + "  downloaded, Play local!", Toast.LENGTH_LONG).show();
                 FileInputStream mp3 = new FileInputStream(data_dir + "/" + fileName);
                 mediaPlayer.reset();
@@ -562,12 +574,31 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
                 mediaPlayer.prepare();
                 is_localfile = true;
             }else{
-                is_localfile = false;
-                mediaPlayer.setDataSource(url);
-                mediaPlayer.prepareAsync();
+                if(url != null || url != "")
+                {
+                    setStatusbarVisibility(1);
+                    is_localfile = false;
+                    mediaPlayer.setDataSource(url);
+                    mediaPlayer.prepareAsync();
+                }
+                else{
+                    setStatusbarVisibility(0);
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void setStatusbarVisibility(int status){
+        if(status == 1){
+            statusLayout1.setVisibility(View.VISIBLE);
+            statusLayout2.setVisibility(View.VISIBLE);
+            statusLayout3.setVisibility(View.VISIBLE);        }
+        else{
+            statusLayout1.setVisibility(View.GONE);
+            statusLayout2.setVisibility(View.GONE);
+            statusLayout3.setVisibility(View.GONE);
         }
     }
 

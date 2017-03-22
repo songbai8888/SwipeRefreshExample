@@ -53,7 +53,6 @@ public class AdapterEnglishContent extends RecyclerView.Adapter<RecyclerView.Vie
         MyHolder myHolder= (MyHolder) holder;
         DataEnglishContent current=data.get(position);
         myHolder.textFishName.setText(current.english_paper_title);
-        //myHolder.textSize.setText("Size: ");
         myHolder.textType.setText("Category: " + current.english_paper_dir);
         if(current.is_downloaded){
             myHolder.textPrice.setText("Local");
@@ -68,9 +67,6 @@ public class AdapterEnglishContent extends RecyclerView.Adapter<RecyclerView.Vie
         else{
             myHolder.ivFish.setImageResource(R.drawable.ic_img_error);
         }
-
-
-
         myHolder.itemView.setSelected(selectedPos == position);
 
         // load image into imageview using glide
