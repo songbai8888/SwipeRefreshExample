@@ -54,11 +54,14 @@ public class AdapterEnglishContent extends RecyclerView.Adapter<RecyclerView.Vie
         DataEnglishContent current=data.get(position);
         myHolder.textFishName.setText(current.english_paper_title);
         myHolder.textType.setText("Category: " + current.english_paper_dir);
-        if(current.is_downloaded){
-            myHolder.textPrice.setText("Local");
+        if(current.is_downloaded ){
+            myHolder.textPrice.setText("audio");
             myHolder.textPrice.setTextColor(Color.GREEN);
-        }else{
-            myHolder.textPrice.setText("Web");
+        }else if( current.english_paper_media.length() == 0 || current.english_paper_media == null){
+            myHolder.textPrice.setText("text");
+            myHolder.textPrice.setTextColor(Color.GREEN);
+        }else {
+            myHolder.textPrice.setText("audio");
             myHolder.textPrice.setTextColor(Color.RED);
         }
         if(current.english_type_id == 1){

@@ -95,8 +95,19 @@ public class MainActivity extends AppCompatActivity {
         type_name.put(1, "VOA Specials");
         type_name.put(2, "VOA Corresponds");
         type_name.put(3, "VOA Readings");
+        type_name.put(4, "VOA Bilingual News");
+        type_name.put(5, "VOA New Words");
+        type_name.put(6, "VOA Movies");
+        type_name.put(7, "CNN Student News");
+/*        4 | VOA Bilingual News | NULL    |
+        |  5 | VOA New Words      | NULL    |
+        |  6 | VOA Movies         | NULL    |
+        |  7 | CNN Student News   | NULL    |
+        |  8 | OMG                | NULL    |
+        |  9 | Words And Idioms   | NULL    |
+        | 10 | Learn A Word       | NULL*/
 
-        mLayoutManager = new LinearLayoutManager(this);
+                mLayoutManager = new LinearLayoutManager(this);
         mRVEnglishContent = (RecyclerView)findViewById(R.id.fishPriceList);
         data=new ArrayList<>();
         ids=new ArrayList<>();

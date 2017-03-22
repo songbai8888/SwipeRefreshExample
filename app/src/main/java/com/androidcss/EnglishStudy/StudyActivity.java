@@ -114,7 +114,10 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
 
         if(getDownloadConfiguration()){
             //Toast.makeText(getApplicationContext(), "Need to download firstly", Toast.LENGTH_SHORT).show();
-            downloadMP3();
+            if(MainActivity.data.get(MainActivity.currentSelected).english_paper_media.length() > 0 || MainActivity.data.get(MainActivity.currentSelected).english_paper_media == null )
+            {
+                downloadMP3();
+            }
         }
 
         this.setTitle(MainActivity.data.get(MainActivity.currentSelected).english_paper_title);
@@ -129,7 +132,8 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
             //mediaPlayer.setDataSource(parseUrl(MainActivity.data.get(MainActivity.currentSelected).english_paper_media).toASCIIString());
-            setPlayerMediaFile(parseUrl(MainActivity.data.get(MainActivity.currentSelected).english_paper_media).toASCIIString(), MainActivity.data.get(MainActivity.currentSelected).id);
+            URI uri = parseUrl(MainActivity.data.get(MainActivity.currentSelected).english_paper_media);
+            setPlayerMediaFile(uri, MainActivity.data.get(MainActivity.currentSelected).id);
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                     isPrepared = true;
@@ -151,8 +155,8 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
                             isPrepared = false;
                             webView.loadDataWithBaseURL("", MainActivity.data.get(current_media).english_paper_content, "text/html", "utf-8", "");
                             //mediaPlayer.setDataSource(parseUrl(getNextPaper()).toASCIIString());
-                            String url = parseUrl(getNextPaper()).toASCIIString();
-                            setPlayerMediaFile(url, MainActivity.data.get(current_media).id);
+                            URI uri = parseUrl(getNextPaper());
+                            setPlayerMediaFile(uri, MainActivity.data.get(current_media).id);
                             StudyActivity.this.setTitle(MainActivity.data.get(current_media).english_paper_title);
                             //Toast.makeText(getApplicationContext(), "Waiting for next", Toast.LENGTH_SHORT).show();
                         }
@@ -238,7 +242,7 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
                         webView.loadDataWithBaseURL("", MainActivity.data.get(current_media).english_paper_content, "text/html", "utf-8", "");
                         try {
                             //mediaPlayer.setDataSource(data_dir + fileName);
-                            setPlayerMediaFile("", MainActivity.data.get(current_media).id);
+                            setPlayerMediaFile(null, MainActivity.data.get(current_media).id);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -374,9 +378,11 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
     {
         if(surl.length() == 0 || surl == null){
             return null;
+        }else{
+            URL u = new URL(surl);
+            return new URI(u.getProtocol(), u.getAuthority(), u.getPath(), u.getQuery(), u.getRef());
         }
-        URL u = new URL(surl);
-        return new URI(u.getProtocol(), u.getAuthority(), u.getPath(), u.getQuery(), u.getRef());
+
     }
 
     //checkInternetConenction();
@@ -462,7 +468,7 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
             Toast.makeText(getApplicationContext(), "Download ok", Toast.LENGTH_SHORT).show();
             MainActivity.data.get(current_media).is_downloaded = true;
             progressDialog.dismiss();
-            setPlayerMediaFile("", MainActivity.data.get(current_media).id);
+            setPlayerMediaFile(null, MainActivity.data.get(current_media).id);
         }
     };
 
@@ -559,7 +565,14 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
         return folder;
     }
 
-    private void setPlayerMediaFile(String url, int pos){
+    private void setPlayerMediaFile(URI uri, int pos){
+        String url= "";
+        if(uri == null){
+            url = "";
+        }else{
+            url = uri.toASCIIString();
+        }
+
         String fileName = pos + ".mp3";   // -> http://maven.apache.org/maven-1.x/maven.pdf
         oneTimeOnly = 0;
         File mp3file = new File(saveDir, fileName);
@@ -574,7 +587,7 @@ public class StudyActivity extends AppCompatActivity implements MediaPlayer.OnEr
                 mediaPlayer.prepare();
                 is_localfile = true;
             }else{
-                if(url != null || url != "")
+                if(url != null && url.length() > 0)
                 {
                     setStatusbarVisibility(1);
                     is_localfile = false;
