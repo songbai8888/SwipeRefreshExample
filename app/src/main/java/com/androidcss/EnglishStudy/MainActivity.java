@@ -358,11 +358,12 @@ public class MainActivity extends AppCompatActivity {
                     public int compare(DataEnglishContent z1, DataEnglishContent z2) {
                         if(z1.english_paper_date == null || z2.english_paper_date == null)
                             return 0;
-                        if (z2.english_paper_date.compareTo(z1.english_paper_date) <= 0)
+                        /*if (z2.english_paper_date.compareTo(z1.english_paper_date) <= 0)
                             return 1;
                         if (z2.english_paper_date.compareTo(z1.english_paper_date) > 0)
                             return -1;
-                        return 0;
+                        return 0;*/
+                        return z1.english_paper_date.compareTo(z2.english_paper_date);
                     }
                 });
 

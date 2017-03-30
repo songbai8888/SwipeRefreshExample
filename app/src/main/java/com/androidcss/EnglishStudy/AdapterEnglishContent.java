@@ -40,7 +40,7 @@ public class AdapterEnglishContent extends RecyclerView.Adapter<RecyclerView.Vie
     // Inflate the layout when viewholder created
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=inflater.inflate(R.layout.container_fish, parent,false);
+        View view=inflater.inflate(R.layout.container_item, parent,false);
         MyHolder holder=new MyHolder(view);
         return holder;
     }
@@ -64,11 +64,16 @@ public class AdapterEnglishContent extends RecyclerView.Adapter<RecyclerView.Vie
             myHolder.textPrice.setText("audio");
             myHolder.textPrice.setTextColor(Color.RED);
         }
-        if(current.english_type_id == 1){
-            myHolder.ivFish.setImageResource(R.drawable.voa);
-        }
-        else{
-            myHolder.ivFish.setImageResource(R.drawable.ic_img_error);
+        switch(current.english_type_id){
+            case 1:
+            case 2:
+                myHolder.ivFish.setImageResource(R.drawable.audio);
+                break;
+            case 3:
+                myHolder.ivFish.setImageResource(R.drawable.news);
+                break;
+            default:
+                myHolder.ivFish.setImageResource(R.drawable.others);
         }
         myHolder.itemView.setSelected(selectedPos == position);
 
